@@ -1,0 +1,32 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    restart: unless-stopped
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - db
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    restart: unless-stopped
+    volumes:
+      - ./config/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - 6379:6379
+    networks:
+      - db
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf", "--ignore-warnings", "ARM64-COW-BUG" ]
+
+volumes:
+  postgres_data:
+
+networks:
+  db:

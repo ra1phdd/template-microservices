@@ -1,0 +1,36 @@
+syntax = "proto3";
+package auth;
+option go_package = "./auth";
+import "google/api/annotations.proto";
+
+message RegistrationRequest {
+    string name = 1;
+    string email = 2;
+    string password = 3;
+    int64  roleId = 4;
+    string birthdate = 5;
+    string photourl = 6;
+    bool push = 7;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message AuthResponse {
+  string key = 1;
+}
+
+service AuthService {
+    rpc Login(LoginRequest) returns (AuthResponse) {
+        option (google.api.http) = {
+            get: "/auth/login"
+        };
+    }
+    rpc Registration(RegistrationRequest) returns (AuthResponse) {
+        option (google.api.http) = {
+            get: "/auth/registration"
+        };
+    }
+}
